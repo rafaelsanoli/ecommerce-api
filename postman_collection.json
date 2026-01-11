@@ -1,0 +1,314 @@
+{
+  "info": {
+    "name": "E-commerce API",
+    "description": "API REST completa de E-commerce para estudantes de frontend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products?page=0&size=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "products"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "size", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/products/1"
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Novo Produto\",\n  \"description\": \"Descrição do produto\",\n  \"price\": 99.90,\n  \"stock\": 10,\n  \"imageUrl\": \"https://picsum.photos/400/300\",\n  \"categoryId\": 1\n}"
+            },
+            "url": "http://localhost:8080/api/v1/products"
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Produto Atualizado\",\n  \"description\": \"Nova descrição\",\n  \"price\": 149.90,\n  \"stock\": 20,\n  \"imageUrl\": \"https://picsum.photos/400/300\",\n  \"categoryId\": 1\n}"
+            },
+            "url": "http://localhost:8080/api/v1/products/1"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/products/1"
+          }
+        },
+        {
+          "name": "Search Products by Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/products/search?name=notebook",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "products", "search"],
+              "query": [{"key": "name", "value": "notebook"}]
+            }
+          }
+        },
+        {
+          "name": "Get Products by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/products/category/2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/categories"
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/categories/1"
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nova Categoria\",\n  \"description\": \"Descrição da categoria\",\n  \"parentCategoryId\": null\n}"
+            },
+            "url": "http://localhost:8080/api/v1/categories"
+          }
+        },
+        {
+          "name": "Get Subcategories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/categories/1/subcategories"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Create Cart",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"user-123\"\n}"
+            },
+            "url": "http://localhost:8080/api/v1/cart"
+          }
+        },
+        {
+          "name": "Get Cart by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/cart/1"
+          }
+        },
+        {
+          "name": "Get Cart by User ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/cart/user/user-001"
+          }
+        },
+        {
+          "name": "Add Item to Cart",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"quantity\": 2\n}"
+            },
+            "url": "http://localhost:8080/api/v1/cart/1/items"
+          }
+        },
+        {
+          "name": "Update Cart Item Quantity",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 5\n}"
+            },
+            "url": "http://localhost:8080/api/v1/cart/items/1"
+          }
+        },
+        {
+          "name": "Remove Item from Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/cart/items/1"
+          }
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/cart/1/clear"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userName\": \"João Silva\",\n  \"rating\": 5,\n  \"comment\": \"Excelente produto!\"\n}"
+            },
+            "url": "http://localhost:8080/api/v1/products/1/reviews"
+          }
+        },
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/products/1/reviews"
+          }
+        },
+        {
+          "name": "Get Product Rating",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/products/1/rating"
+          }
+        },
+        {
+          "name": "Update Review",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userName\": \"João Silva\",\n  \"rating\": 4,\n  \"comment\": \"Bom produto.\"\n}"
+            },
+            "url": "http://localhost:8080/api/v1/reviews/1"
+          }
+        },
+        {
+          "name": "Delete Review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/reviews/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        {
+          "name": "Add to Wishlist",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"user-123\",\n  \"productId\": 1\n}"
+            },
+            "url": "http://localhost:8080/api/v1/wishlist"
+          }
+        },
+        {
+          "name": "Get User Wishlist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/wishlist/user/user-001"
+          }
+        },
+        {
+          "name": "Remove from Wishlist",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8080/api/v1/wishlist/1"
+          }
+        },
+        {
+          "name": "Check if Product in Wishlist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/wishlist/check?userId=user-001&productId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "wishlist", "check"],
+              "query": [
+                {"key": "userId", "value": "user-001"},
+                {"key": "productId", "value": "1"}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
