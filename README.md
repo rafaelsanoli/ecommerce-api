@@ -358,7 +358,7 @@ chore: tarefas de manutenção
 - [x] Documentação Completa
 
 ### Próximas Versões 🚀
-- [ ] **v1.1.0** - Autenticação JWT
+- [x] **v1.1.0** - Autenticação JWT
 - [ ] **v1.2.0** - Sistema de Pedidos
 - [ ] **v1.3.0** - Upload de Imagens
 - [ ] **v1.4.0** - Sistema de Pagamento
