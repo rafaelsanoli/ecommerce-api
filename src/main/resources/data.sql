@@ -2,6 +2,13 @@
 -- DADOS INICIAIS - E-COMMERCE API
 -- ===================================
 
+-- Inserir Usuários de Teste
+-- Senha para todos: password123
+INSERT INTO users (id, username, email, password, full_name, role, active, created_at) VALUES
+(1, 'admin', 'admin@ecommerce.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Administrador', 'ADMIN', true, CURRENT_TIMESTAMP()),
+(2, 'customer', 'customer@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Cliente Teste', 'CUSTOMER', true, CURRENT_TIMESTAMP()),
+(3, 'joao', 'joao@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'João Silva', 'CUSTOMER', true, CURRENT_TIMESTAMP());
+
 -- Inserir Categorias
 INSERT INTO categories (id, name, description, parent_category_id) VALUES
 (1, 'Eletrônicos', 'Produtos eletrônicos em geral', NULL),

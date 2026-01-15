@@ -102,7 +102,16 @@ Ou mude a porta conforme explicado acima.
 **R:** `http://localhost:8080/api/v1`
 
 ### P: Preciso de autenticação?
-**R:** Não na versão atual. A API é aberta para facilitar o aprendizado.
+**R:** A partir da v1.1.0, sim! A API usa autenticação JWT. Endpoints públicos (GET de produtos e categorias) não precisam de autenticação, mas criar/editar/deletar recursos e acessar carrinho/wishlist requerem token JWT. Veja o [Guia de Autenticação](./07-authentication.md).
+
+### P: Como obter um token JWT?
+**R:** Faça login no endpoint `/api/v1/auth/login`:
+```bash
+curl -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"password123"}'
+```
+Use o token retornado no header `Authorization: Bearer {token}`.
 
 ### P: Como funciona a paginação?
 **R:** Adicione parâmetros na query:
@@ -139,6 +148,88 @@ GET /api/v1/products/category/2
 - Comentário opcional
 - Um review por requisição
 - A API calcula automaticamente a média
+
+---
+
+## 🔐 Autenticação e Segurança *(v1.1.0)*
+
+### P: Como funciona a autenticação JWT?
+**R:** A API usa JSON Web Tokens (JWT) para autenticação stateless:
+1. Faça login com username/password
+2. Receba um token JWT válido por 24h
+3. Envie o token em cada requisição no header `Authorization: Bearer {token}`
+4. O token expira após 24h, faça login novamente
+
+[Guia completo de Autenticação](./07-authentication.md)
+
+### P: Quais são os usuários de teste?
+**R:** 
+- **Admin**: username: `admin`, password: `password123`
+- **Customer**: username: `customer`, password: `password123`
+- **João**: username: `joao`, password: `password123`
+
+### P: Qual a diferença entre CUSTOMER e ADMIN?
+**R:**
+- **CUSTOMER**: Pode ver produtos, gerenciar carrinho, wishlist e criar reviews
+- **ADMIN**: Pode fazer tudo que CUSTOMER faz + criar/editar/deletar produtos e categorias
+
+### P: Como uso o token no meu código?
+**R:** Exemplos:
+
+**JavaScript/Fetch:**
+```javascript
+const token = localStorage.getItem('token');
+fetch('http://localhost:8080/api/v1/users/me', {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+```
+
+**Axios:**
+```javascript
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+```
+
+### P: Erro 401 Unauthorized
+**R:** Seu token é inválido ou expirou. Faça login novamente para obter um novo token.
+
+### P: Erro 403 Forbidden
+**R:** Você não tem permissão para acessar este recurso. Verifique se seu usuário tem o role adequado (alguns endpoints requerem ADMIN).
+
+### P: O token não está funcionando no Swagger
+**R:**
+1. Clique no botão 🔓 **Authorize** no topo
+2. Cole apenas o token (sem "Bearer")
+3. Clique em **Authorize**
+4. Feche o modal
+5. Tente novamente o endpoint
+
+### P: Como criar um novo usuário?
+**R:** Use o endpoint de registro:
+```bash
+curl -X POST http://localhost:8080/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "novouser",
+    "email": "user@example.com",
+    "password": "senha123",
+    "fullName": "Nome Completo"
+  }'
+```
+
+### P: Posso mudar a duração do token?
+**R:** Sim! Edite `application.yml`:
+```yaml
+jwt:
+  expiration: 3600000  # 1 hora (em milissegundos)
+```
+
+### P: Como deslogar um usuário?
+**R:** JWT é stateless, então não há endpoint de logout. No frontend, simplesmente remova o token do storage:
+```javascript
+localStorage.removeItem('token');
+```
 
 ---
 

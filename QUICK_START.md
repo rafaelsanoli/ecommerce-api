@@ -22,34 +22,77 @@ Abra seu navegador em: **http://localhost:8080/swagger-ui.html**
 
 Você verá todos os endpoints disponíveis e poderá testar diretamente pelo Swagger!
 
-### 3. Endpoints Principais
+### 3. Autenticação JWT (v1.1.0+)
+
+⚠️ **IMPORTANTE:** A partir da v1.1.0, a API requer autenticação para a maioria dos endpoints.
+
+#### Fazer Login
+```bash
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "password123"
+}
+```
+
+**Resposta:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "type": "Bearer",
+  "username": "admin",
+  "email": "admin@ecommerce.com"
+}
+```
+
+#### Usar o Token
+Inclua o token no header de todas as requisições protegidas:
+```
+Authorization: Bearer SEU_TOKEN_AQUI
+```
+
+#### Usuários de Teste
+- **Admin**: `admin` / `password123` (pode criar/editar produtos)
+- **Customer**: `customer` / `password123` (pode comprar)
+
+📖 [Guia completo de Autenticação](./docs/07-authentication.md)
+
+### 4. Endpoints Principais
 
 **Base URL:** `http://localhost:8080/api/v1`
 
-#### Listar Produtos
+#### 🔓 Públicos (sem autenticação)
+
+**Listar Produtos**
 ```bash
 GET http://localhost:8080/api/v1/products
 ```
 
-#### Buscar Produto por ID
+**Buscar Produto por ID**
 ```bash
 GET http://localhost:8080/api/v1/products/1
 ```
 
-#### Criar Carrinho
+#### 🔒 Protegidos (requer token)
+
+**Criar Carrinho**
 ```bash
 POST http://localhost:8080/api/v1/cart
 Content-Type: application/json
+Authorization: Bearer SEU_TOKEN
 
 {
   "userId": "meu-usuario-123"
 }
 ```
 
-#### Adicionar Item ao Carrinho
+**Adicionar Item ao Carrinho**
 ```bash
 POST http://localhost:8080/api/v1/cart/1/items
 Content-Type: application/json
+Authorization: Bearer SEU_TOKEN
 
 {
   "productId": 1,
@@ -57,48 +100,54 @@ Content-Type: application/json
 }
 ```
 
-### 4. Dados Disponíveis
+### 5. Dados Disponíveis
 
-A API já vem com **15 produtos pré-cadastrados** em diversas categorias:
-- Eletrônicos (Notebooks, Smartphones)
-- Roupas (Masculino, Feminino)
-- Livros (Programação)
-- Casa e Decoração
+A API já vem com dados pré-cadastrados:
+- **3 usuários** (admin, customer, joao)
+- **15 produtos** em diversas categorias
+- **10 categorias** (Eletrônicos, Roupas, Livros, etc)
+- **10 avaliações** de exemplo
 
-### 5. Testar no Postman/Insomnia
+### 6. Testar com Script Automático
 
-Importe esta collection básica:
-
-```json
-{
-  "name": "E-commerce API",
-  "requests": [
-    {
-      "name": "Listar Produtos",
-      "method": "GET",
-      "url": "http://localhost:8080/api/v1/products"
-    },
-    {
-      "name": "Buscar Produto",
-      "method": "GET", 
-      "url": "http://localhost:8080/api/v1/products/1"
-    }
-  ]
-}
+Execute o script de testes incluído:
+```bash
+./test-api.sh
 ```
 
-### 6. Exemplo de Integração no Frontend
+Ele testará todos os principais endpoints incluindo autenticação!
 
-#### JavaScript (Fetch)
+### 7. Exemplo de Integração no Frontend
+
+#### JavaScript (Fetch) com JWT
 ```javascript
-// Listar produtos
+// 1. Fazer login
+async function login() {
+  const response = await fetch('http://localhost:8080/api/v1/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: 'admin',
+      password: 'password123'
+    })
+  });
+  
+  const data = await response.json();
+  localStorage.setItem('token', data.token);
+  return data.token;
+}
+
+// 2. Listar produtos (público)
 fetch('http://localhost:8080/api/v1/products')
   .then(response => response.json())
   .then(data => console.log(data));
 
-// Criar carrinho
-fetch('http://localhost:8080/api/v1/cart', {
-  method: 'POST',
+// 3. Criar carrinho (protegido)
+async function createCart() {
+  const token = localStorage.getItem('token');
+  
+  const response = await fetch('http://localhost:8080/api/v1/cart', {
+    method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ userId: 'user-123' })
 })

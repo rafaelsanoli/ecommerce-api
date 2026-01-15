@@ -47,3 +47,7 @@ logging:
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
 
+# JWT Configuration
+jwt:
+  secret: ecommerce-api-secret-key-change-in-production-minimum-256-bits-required-for-hs256-algorithm
+  expiration: 86400000  # 24 horas em milissegundos

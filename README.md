@@ -139,8 +139,17 @@ mvn spring-boot:run
 ### Primeira Requisição
 
 ```bash
-# Listar produtos
+# Fazer login (obtém token JWT)
+curl -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"password123"}'
+
+# Listar produtos (público)
 curl http://localhost:8080/api/v1/products
+
+# Acessar perfil (protegido - requer token)
+curl http://localhost:8080/api/v1/users/me \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI"
 ```
 
 ### Acessar Documentação
@@ -159,6 +168,7 @@ Acesse a [**documentação completa**](./docs/README.md) com guias detalhados:
 | Documento | Descrição |
 |-----------|-----------|
 | [🚀 Instalação](./docs/01-installation.md) | Guia completo de instalação |
+| [🔐 Autenticação JWT](./docs/07-authentication.md) | Como usar autenticação JWT |
 | [💻 Frontend Guide](./docs/09-frontend-guide.md) | Integração com React, Vue, Angular |
 | [🏗️ Arquitetura](./docs/03-architecture.md) | Entenda a arquitetura hexagonal |
 | [📡 API Reference](./docs/04-api-products.md) | Documentação detalhada dos endpoints |

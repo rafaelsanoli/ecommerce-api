@@ -41,8 +41,9 @@ Bem-vindo à documentação oficial da **E-commerce API**!
 ### 👨‍💻 Sou Desenvolvedor Frontend
 Comece por:
 1. [Guia de Início Rápido](./02-quick-start.md)
-2. [Guia para Frontend](./09-frontend-guide.md)
-3. [Exemplos de Código](./10-code-examples.md)
+2. [Autenticação JWT](./07-authentication.md) 🔐
+3. [Guia para Frontend](./09-frontend-guide.md)
+4. [Exemplos de Código](./10-code-examples.md)
 
 ### 🏗️ Sou Desenvolvedor Backend
 Comece por:
